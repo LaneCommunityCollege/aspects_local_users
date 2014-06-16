@@ -1,0 +1,52 @@
+---
+# tasks file for aspects_local_users
+
+- name: ensure users exist.
+  user:
+    state="{{ item.value.state }}"
+    name="{{ item.value.username }}" 
+    comment="{{ item.value.fullname }}" 
+    password="{{ item.value.crypted_pass }}" 
+    createhome="yes"
+    shell="{{ item.value.shell }}"
+    uid="{{ item.value.uid }}"
+  with_dict: aspects_local_users
+  tags:
+    - aspects_local_users
+
+- name: ensure user groups exist and have the correct gid.
+  group:
+    state="{{ item.value.state }}"
+    name="{{ item.value.username }}"
+    gid="{{ item.value.uid }}"
+  with_dict: aspects_local_users
+  tags:
+    - aspects_local_users
+
+- name: Debian - Set extra user groups
+  when: ansible_os_family == "Debian"
+  user:
+    name="{{ item.value.username }}"
+    groups="{{ item.value.groups.Debian }}"
+  with_dict: aspects_local_users
+  tags:
+    - aspects_local_users
+
+- name: RedHat - Set extra user groups
+  when: ansible_os_family == "RedHat"
+  user:
+    name="{{ item.value.username }}"
+    groups="{{ item.value.groups.RedHat }}"
+  with_dict: aspects_local_users
+  tags:
+    - aspects_local_users
+
+- name: ensure user ssh keys are set
+  authorized_key:
+    state="{{ item.value.state }}"
+    user="{{ item.value.username }}"
+    key="{{ item.value.ssh_pubkey }}"
+  with_dict: aspects_local_users_ssh_keys
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys
