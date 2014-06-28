@@ -24,7 +24,7 @@
     - aspects_local_users
 
 - name: Debian - Set extra user groups
-  when: ansible_os_family == "Debian"
+  when: ansible_os_family == "Debian" and item.value.groups.Debian is defined
   user:
     name="{{ item.value.username }}"
     groups="{{ item.value.groups.Debian }}"
@@ -33,7 +33,7 @@
     - aspects_local_users
 
 - name: RedHat - Set extra user groups
-  when: ansible_os_family == "RedHat"
+  when: ansible_os_family == "RedHat" and item.value.groups.RedHat is defined
   user:
     name="{{ item.value.username }}"
     groups="{{ item.value.groups.RedHat }}"
