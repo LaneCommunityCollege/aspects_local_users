@@ -4,13 +4,13 @@
 - name: ensure users exist.
   when: item.value.state is defined
   user:
-    state="{{ item.value.state }}"
-    name="{{ item.value.username }}" 
-    comment="{{ item.value.fullname }}" 
-    password="{{ item.value.crypted_pass }}" 
-    createhome="yes"
-    shell="{{ item.value.shell }}"
-    uid="{{ item.value.uid }}"
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.username }}"
+    comment: "{{ item.value.fullname }}"
+    password: "{{ item.value.crypted_pass }}"
+    createhome: "yes"
+    shell: "{{ item.value.shell }}"
+    uid: "{{ item.value.uid }}"
   with_dict: aspects_local_users
   tags:
     - aspects_local_users
@@ -18,9 +18,9 @@
 - name: ensure user groups exist and have the correct gid.
   when: item.value.state is defined
   group:
-    state="{{ item.value.state }}"
-    name="{{ item.value.username }}"
-    gid="{{ item.value.uid }}"
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.username }}"
+    gid: "{{ item.value.uid }}"
   with_dict: aspects_local_users
   tags:
     - aspects_local_users
@@ -28,8 +28,8 @@
 - name: Debian - Set extra user groups
   when: ansible_os_family == "Debian" and item.value.groups.Debian is defined
   user:
-    name="{{ item.value.username }}"
-    groups="{{ item.value.groups.Debian }}"
+    name: "{{ item.value.username }}"
+    groups: "{{ item.value.groups.Debian }}"
   with_dict: aspects_local_users
   tags:
     - aspects_local_users
@@ -37,8 +37,8 @@
 - name: RedHat - Set extra user groups
   when: ansible_os_family == "RedHat" and item.value.groups.RedHat is defined
   user:
-    name="{{ item.value.username }}"
-    groups="{{ item.value.groups.RedHat }}"
+    name: "{{ item.value.username }}"
+    groups: "{{ item.value.groups.RedHat }}"
   with_dict: aspects_local_users
   tags:
     - aspects_local_users
@@ -46,9 +46,9 @@
 - name: ensure user ssh keys are set
   when: item.value.state is defined
   authorized_key:
-    state="{{ item.value.state }}"
-    user="{{ item.value.username }}"
-    key="{{ item.value.ssh_pubkey }}"
+    state: "{{ item.value.state }}"
+    user: "{{ item.value.username }}"
+    key: "{{ item.value.ssh_pubkey }}"
   with_dict: aspects_local_users_ssh_keys
   tags:
     - aspects_local_users
