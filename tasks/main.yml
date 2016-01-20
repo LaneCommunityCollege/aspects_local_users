@@ -44,6 +44,7 @@
     - aspects_local_users
 
 - name: ensure user ssh keys are set
+  when: item.value.state is defined
   authorized_key:
     state="{{ item.value.state }}"
     user="{{ item.value.username }}"
