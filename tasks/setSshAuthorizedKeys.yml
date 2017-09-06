@@ -1,0 +1,35 @@
+---
+- name: ensure user .ssh directory exists.
+  file:
+    state: directory
+    path: "{{ item.value.home|default('/home/' {{ item.value.name }}) }}/.ssh"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode: "700"
+  with_dict: "{{ aspects_local_users }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys
+
+- name: ensure user .ssh/authorized_keys file exists.
+  file:
+    state: directory
+    path: "{{ item.value.home|default('/home/' {{ item.value.name }}) }}/.ssh/authorized_keys"
+    owner: "{{ item.value.username }}"
+    group: "{{ item.value.username }}"
+    mode: "600"
+  with_dict: "{{ aspects_local_users }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys
+
+- name: ensure user ssh keys are set
+  when: item.value.state is defined
+  authorized_key:
+    state: "{{ item.value.state }}"
+    user: "{{ item.value.username }}"
+    key: "{{ item.value.ssh_pubkey }}"
+  with_dict: "{{ aspects_local_users_ssh_keys }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys
