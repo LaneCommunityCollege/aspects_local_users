@@ -1,6 +1,6 @@
 # aspects_local_users
 
-Manage local linux users. 
+Manage local linux users.
 
 # Requirements
 
@@ -12,6 +12,11 @@ Dictionary of users. See the Example Playbook for more.
 
 ## aspects_local_users_ssh_keys
 The public keys you want to add to various users. See the Example Playbook for more.
+
+## aspects_local_users_enabled
+To enable or disable this role. Set to True to enable. False to disable.
+
+Default is False, or disabled.
 
 # Example Playbook
 
