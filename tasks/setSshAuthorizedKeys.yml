@@ -13,7 +13,7 @@
 
 - name: ensure user .ssh/authorized_keys file exists.
   file:
-    state: directory
+    state: file
     path: "{{ item.value.home|default('/home/' + item.value.username) }}/.ssh/authorized_keys"
     owner: "{{ item.value.username }}"
     group: "{{ item.value.username }}"
