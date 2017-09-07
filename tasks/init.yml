@@ -17,7 +17,7 @@
     - aspects_local_users
 
 - name: ensure user groups exist and have the correct gid.
-  when: item.value.state is defined
+  when: item.value.state == "present"
   group:
     state: "{{ item.value.state }}"
     name: "{{ item.value.username }}"
@@ -31,8 +31,8 @@
   tags:
     - aspects_local_users
 
-# - name: Set ssh authorized_key's in user's .ssh/authorized_keys file.
-#   include: setSshAuthorizedKeys.yml
-#   tags:
-#     - aspects_local_users
-#     - aspects_local_users_ssh_keys
+- name: Set ssh authorized_key's in user's .ssh/authorized_keys file.
+  include: setSshAuthorizedKeys.yml
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys

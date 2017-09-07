@@ -1,6 +1,6 @@
 ---
 - name: Debian - Set extra user groups
-  when: ansible_os_family == "Debian" and item.value.groups.Debian is defined
+  when: item.value.groups.Debian is defined
   user:
     name: "{{ item.value.username }}"
     groups: "{{ item.value.groups.Debian }}"

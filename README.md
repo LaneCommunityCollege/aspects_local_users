@@ -50,11 +50,11 @@ Default is False, or disabled.
           webby:
             state: present
             username: webby
-            ssh_pubkey: 'first pub key'
+            ssh_pubkey: 'first pub key' # Note that the authorized_key module appears to validate this, so the example value here will fail.
           webby2:
             state: present
             username: webby
-            ssh_pubkey: 'second pub key'
+            ssh_pubkey: 'second pub key' # Note that the authorized_key module appears to validate this, so the example value here will fail.
 
 # License
 MIT
