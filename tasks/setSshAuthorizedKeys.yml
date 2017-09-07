@@ -2,7 +2,7 @@
 - name: ensure user .ssh directory exists.
   file:
     state: directory
-    path: "{{ item.value.home|default('/home/' {{ item.value.name }}) }}/.ssh"
+    path: "{{ item.value.home|default('/home/' + item.value.username) }}/.ssh"
     owner: "{{ item.value.username }}"
     group: "{{ item.value.username }}"
     mode: "700"
@@ -14,7 +14,7 @@
 - name: ensure user .ssh/authorized_keys file exists.
   file:
     state: directory
-    path: "{{ item.value.home|default('/home/' {{ item.value.name }}) }}/.ssh/authorized_keys"
+    path: "{{ item.value.home|default('/home/' + item.value.username) }}/.ssh/authorized_keys"
     owner: "{{ item.value.username }}"
     group: "{{ item.value.username }}"
     mode: "600"

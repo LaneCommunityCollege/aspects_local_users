@@ -9,7 +9,7 @@
     comment: "{{ item.value.fullname }}"
     password: "{{ item.value.crypted_pass }}"
     createhome: "yes"
-    home: "{{ item.value.home|default(/home/{{ item.value.username }}) }}"
+    home: "{{ item.value.home|default('/home/' + item.value.username) }}"
     shell: "{{ item.value.shell }}"
     uid: "{{ item.value.uid }}"
   with_dict: "{{ aspects_local_users }}"
@@ -30,8 +30,9 @@
   include: "setExtraGroups{{ ansible_os_family }}.yml"
   tags:
     - aspects_local_users
-- name: Set ssh authorized_key's in user's .ssh/authorized_keys file.
-  include: setSshAuthorizedKeys.yml
-  tags:
-    - aspects_local_users
-    - aspects_local_users_ssh_keys
+
+# - name: Set ssh authorized_key's in user's .ssh/authorized_keys file.
+#   include: setSshAuthorizedKeys.yml
+#   tags:
+#     - aspects_local_users
+#     - aspects_local_users_ssh_keys

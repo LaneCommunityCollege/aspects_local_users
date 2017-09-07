@@ -1,6 +1,6 @@
 # aspects_local_users
 
-Manage local linux users.
+Manage local Linux user accounts and their authorized ssh keys.
 
 # Requirements
 
@@ -30,6 +30,17 @@ Default is False, or disabled.
             username: webby
             fullname: Web By
             crypted_pass: 'thepasswordgoeshere'
+            shell: /bin/bash
+            groups:
+              Debian: "www-data"
+              RedHat: "apache"
+            uid: 10005
+          optuser:
+            state: present
+            username: opter
+            fullname: Opt By
+            crypted_pass: 'thepasswordgoeshere'
+            home: /opt/opterdir
             shell: /bin/bash
             groups:
               Debian: "www-data"
