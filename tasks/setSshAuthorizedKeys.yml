@@ -13,7 +13,7 @@
 
 - name: ensure user .ssh/authorized_keys file exists.
   file:
-    state: file
+    state: touch
     path: "{{ item.value.home|default('/home/' + item.value.username) }}/.ssh/authorized_keys"
     owner: "{{ item.value.username }}"
     group: "{{ item.value.username }}"
@@ -24,6 +24,17 @@
     - aspects_local_users_ssh_keys
 
 - name: ensure user ssh keys are set
+  when: item.value.ssh_pubkey is defined
+  authorized_key:
+    state: "{{ item.value.state }}"
+    user: "{{ item.value.username }}"
+    key: "{{ item.value.ssh_pubkey }}"
+  with_dict: "{{ aspects_local_users }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_ssh_keys
+
+- name: ensure extra user ssh keys are set
   when: item.value.state is defined
   authorized_key:
     state: "{{ item.value.state }}"
