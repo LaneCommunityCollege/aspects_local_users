@@ -7,3 +7,4 @@
   with_dict: "{{ aspects_local_users }}"
   tags:
     - aspects_local_users
+    - aspects_local_users_groups

@@ -1,10 +1,10 @@
 ---
 galaxy_info:
-  author: David Reagan
+  author: David Reagan <reagand@lanecc.edu>
   description: Manage local user accounts.
   company: Lane Community College
   license: MIT
-  min_ansible_version: 1.9
+  min_ansible_version: 2.4
   #
   # Below are all platforms currently available. Just uncomment
   # the ones that apply to your role. If you don't see your
@@ -20,7 +20,7 @@ galaxy_info:
     - xenial
   - name: Debian
     versions:
-    - jessie
+    - stretch
   #
   # Below are all categories currently available. Just as with
   # the platforms above, uncomment those that apply to your role.

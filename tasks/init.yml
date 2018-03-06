@@ -1,7 +1,16 @@
 ---
-# tasks file for aspects_local_users
+- name: Create user groups with the correct gid.
+  when: item.value.state == "present"
+  group:
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.username }}"
+    gid: "{{ item.value.uid }}"
+  with_dict: "{{ aspects_local_users }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
 
-- name: ensure users exist.
+- name: Create users.
   when: item.value.state is defined
   user:
     state: "{{ item.value.state }}"
@@ -16,23 +25,26 @@
   tags:
     - aspects_local_users
 
-- name: ensure user groups exist and have the correct gid.
-  when: item.value.state == "present"
-  group:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    gid: "{{ item.value.uid }}"
-  with_dict: "{{ aspects_local_users }}"
+- name: Add/Remove extra groups by OS family.
+  when: aspects_local_users_groups is defined
+  include: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
   tags:
     - aspects_local_users
+    - aspects_local_users_groups
 
-- name: Set extra groups by OS family.
+- name: Set users extra groups by OS family.
   include: "setExtraGroups{{ ansible_os_family }}.yml"
   tags:
     - aspects_local_users
+    - aspects_local_users_groups
 
-- name: Set ssh authorized_key's in user's .ssh/authorized_keys file.
-  include: setSshAuthorizedKeys.yml
+- name: ensure user ssh keys are set
+  when: aspects_local_users_ssh_keys is defined and item.value.state is defined
+  authorized_key:
+    state: "{{ item.value.state }}"
+    user: "{{ item.value.username }}"
+    key: "{{ item.value.key }}"
+  with_dict: "{{ aspects_local_users_ssh_keys }}"
   tags:
     - aspects_local_users
     - aspects_local_users_ssh_keys
