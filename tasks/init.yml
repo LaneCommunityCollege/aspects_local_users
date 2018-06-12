@@ -1,6 +1,6 @@
 ---
 - name: Create user groups with the correct gid.
-  when: item.value.state == "present"
+  when: item.value.state is defined and item.value.state == "present"
   group:
     state: "{{ item.value.state }}"
     name: "{{ item.value.username }}"
@@ -11,7 +11,7 @@
     - aspects_local_users_groups
 
 - name: Create users.
-  when: item.value.state is defined
+  when: item.value.state is defined and item.value.state is defined
   user:
     state: "{{ item.value.state }}"
     name: "{{ item.value.username }}"

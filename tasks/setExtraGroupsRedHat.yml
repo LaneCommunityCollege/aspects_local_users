@@ -1,6 +1,6 @@
 ---
 - name: RedHat - Set extra user groups
-  when: item.value.groups.RedHat is defined
+  when: item.value.state is defined and item.value.groups.RedHat is defined
   user:
     name: "{{ item.value.username }}"
     groups: "{{ item.value.groups.RedHat }}"
