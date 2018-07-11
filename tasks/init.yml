@@ -21,6 +21,7 @@
     home: "{{ item.value.home|default('/home/' + item.value.username) }}"
     shell: "{{ item.value.shell }}"
     uid: "{{ item.value.uid }}"
+    group: "{{ item.value.username }}"
   with_dict: "{{ aspects_local_users }}"
   tags:
     - aspects_local_users
