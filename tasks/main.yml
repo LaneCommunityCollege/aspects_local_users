@@ -1,6 +1,6 @@
 ---
 - name: Include init.yml when role is enabled.
   when: aspects_local_users_enabled
-  include: init.yml
+  include_tasks: init.yml
   tags:
   - aspects_local_users

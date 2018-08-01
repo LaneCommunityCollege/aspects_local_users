@@ -10,8 +10,8 @@
     - aspects_local_users
     - aspects_local_users_groups
 
-- name: Create users.
-  when: item.value.state is defined and item.value.state is defined
+- name: Set user state
+  when: item.value.state is defined
   user:
     state: "{{ item.value.state }}"
     name: "{{ item.value.username }}"
@@ -28,13 +28,13 @@
 
 - name: Add/Remove extra groups by OS family.
   when: aspects_local_users_groups is defined
-  include: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
+  include_tasks: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
 
 - name: Set users extra groups by OS family.
-  include: "setExtraGroups{{ ansible_os_family }}.yml"
+  include_tasks: "setExtraGroups{{ ansible_os_family }}.yml"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
