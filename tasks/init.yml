@@ -26,6 +26,34 @@
   tags:
     - aspects_local_users
 
+- name: Set system group state
+  when: aspects_local_users_system_groups is defined
+  group:
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.name }}"
+    gid: "{{ item.value.gid }}"
+    system: "yes"
+  loop: "{{ aspects_local_users_system_groups|default({})|dict2items }}"
+  tags:
+    - aspects_local_users
+
+- name: Set system user state
+  when: aspects_local_users_system_users is defined
+  user:
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.username }}"
+    comment: "{{ item.value.fullname }}"
+    password: "{{ item.value.crypted_pass }}"
+    createhome: "yes"
+    home: "{{ item.value.home|default('/home/' + item.value.username) }}"
+    shell: "{{ item.value.shell }}"
+    uid: "{{ item.value.uid }}"
+    group: "{{ item.value.group|default(item.value.username) }}"
+    system: "yes"
+  loop: "{{ aspects_local_users_system_users|default({})|dict2items }}"
+  tags:
+    - aspects_local_users
+
 - name: Add/Remove extra groups by OS family.
   when: aspects_local_users_groups is defined
   include_tasks: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
