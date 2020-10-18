@@ -32,8 +32,6 @@ The public keys you want to add to various users. See the Example Playbook for m
 # Example Playbook
 ```yaml
 - hosts: servers
-  roles:
-     - aspects_local_users
   vars:
     aspects_local_users_enabled: True
     aspects_local_users:
@@ -76,6 +74,34 @@ The public keys you want to add to various users. See the Example Playbook for m
         state: absent
         name: webserverusers
         gid: 2005
+    aspects_local_users_system_users:
+      sysaspects:
+        state: "present"
+        username: "sysaspects"
+        fullname: "test system user"
+        crypted_pass: '$6$password123$MtblzP5ivc0dWizVaOhUlpwwIQggaPwq2Fjjz19Ef1mcxUMVRvpxg0M.Hp.l5bvbQY7zwH9piocaOa0K9mOkW.'
+        shell: "/bin/bash"
+        uid: 444
+      sysbeta:
+        state: "absent"
+        username: "sysbeta"
+        fullname: "beta system user"
+        crypted_pass: '$6$password123$MtblzP5ivc0dWizVaOhUlpwwIQggaPwq2Fjjz19Ef1mcxUMVRvpxg0M.Hp.l5bvbQY7zwH9piocaOa0K9mOkW.'
+        home: "/opt/sysbeta"
+        group: "mail"
+        shell: "/bin/bash"
+        uid: 445
+    aspects_local_users_system_groups:
+      alpha:
+        state: "present"
+        name: "alpha"
+        gid: "333"
+      beta:
+        state: "absent"
+        name: "alpha"
+        gid: "334"
+  roles:
+     - aspects_local_users
 ```
 # License
 MIT
