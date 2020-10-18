@@ -5,7 +5,7 @@
     state: "{{ item.value.state }}"
     name: "{{ item.value.username }}"
     gid: "{{ item.value.uid }}"
-  loop: "{{ aspects_local_users|dict2items }}"
+  loop: "{{ aspects_local_users | default({}) | dict2items }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
@@ -22,19 +22,42 @@
     shell: "{{ item.value.shell }}"
     uid: "{{ item.value.uid }}"
     group: "{{ item.value.username }}"
-  loop: "{{ aspects_local_users|dict2items }}"
+  loop: "{{ aspects_local_users | default({}) | dict2items }}"
   tags:
     - aspects_local_users
 
-- name: Add/Remove extra groups by OS family.
-  when: aspects_local_users_groups is defined
-  include_tasks: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
+- name: Debian - Add/Remove extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "Debian" or ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu"
+  include_tasks: "addRemoveExtraGroupsDebian.yml"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
 
-- name: Set users extra groups by OS family.
-  include_tasks: "setExtraGroups{{ ansible_os_family }}.yml"
+- name: RedHat - Add/Remove extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+  include_tasks: "addRemoveExtraGroupsRedHat.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+
+- name: Debian - Set users extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "Debian" or ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu"
+  include_tasks: "setExtraGroupsDebian.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+
+- name: RedHat - Set users extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+  include_tasks: "setExtraGroupsRedHat.yml"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
@@ -44,8 +67,8 @@
   authorized_key:
     state: "{{ item.value.state }}"
     user: "{{ item.value.username }}"
-    key: "{{ item.value.key }}"
-  loop: "{{ aspects_local_users_ssh_keys|dict2items }}"
+    key: "{{ item.value.ssh_pubkey }}"
+  loop: "{{ aspects_local_users_ssh_keys | default({}) | dict2items }}"
   tags:
     - aspects_local_users
     - aspects_local_users_ssh_keys

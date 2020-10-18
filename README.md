@@ -35,6 +35,7 @@ The public keys you want to add to various users. See the Example Playbook for m
   roles:
      - aspects_local_users
   vars:
+    aspects_local_users_enabled: True
     aspects_local_users:
       webserveruser:
         state: present
@@ -56,7 +57,7 @@ The public keys you want to add to various users. See the Example Playbook for m
         groups:
           Debian: "www-data"
           RedHat: "apache"
-        uid: 10005
+        uid: 10006
     aspects_local_users_ssh_keys:
       webby:
         state: present
@@ -74,7 +75,7 @@ The public keys you want to add to various users. See the Example Playbook for m
       oldwebusers:
         state: absent
         name: webserverusers
-        gid: 1005
+        gid: 2005
 ```
 # License
 MIT

@@ -4,7 +4,7 @@
     name: "{{ item.value.name }}"
     state: "{{ item.value.state }}"
     gid: "{{ item.value.gid }}"
-  loop: "{{ aspects_local_users_groups|dict2items }}"
+  loop: "{{ aspects_local_users_groups | default({}) | dict2items }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups

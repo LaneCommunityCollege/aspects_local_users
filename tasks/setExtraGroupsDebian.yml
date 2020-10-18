@@ -4,7 +4,7 @@
   user:
     name: "{{ item.value.username }}"
     groups: "{{ item.value.groups.Debian }}"
-  loop: "{{ aspects_local_users|dict2items }}"
+  loop: "{{ aspects_local_users | default({}) | dict2items }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
