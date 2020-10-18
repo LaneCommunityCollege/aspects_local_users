@@ -55,6 +55,17 @@
   tags:
     - aspects_local_users
 
+- name: Set system user group state
+  when: aspects_local_users_system_groups is defined
+  group:
+    state: "{{ item.value.state }}"
+    name: "{{ item.value.username }}"
+    gid: "{{ item.value.uid }}"
+    system: "yes"
+  loop: "{{ aspects_local_users_system_users|default({})|dict2items }}"
+  tags:
+    - aspects_local_users
+
 - name: Set system user state
   when: aspects_local_users_system_users is defined
   user:
@@ -73,8 +84,22 @@
     - aspects_local_users
 
 - name: Add/Remove extra groups by OS family.
-  when: aspects_local_users_groups is defined
-  include_tasks: "addRemoveExtraGroups{{ ansible_os_family }}.yml"
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "Debian" or ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu"
+  include_tasks: "addRemoveExtraGroupsDebian.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+
+- name: Add/Remove extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+  include_tasks: "addRemoveExtraGroupsRedHat.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
 
 - name: Debian - Set users extra groups by OS family.
   when:
