@@ -1,28 +1,28 @@
 ---
 - name: Create user groups with the correct gid.
-  when: item.value.state is defined and item.value.state == "present"
+  when: item.1.state is defined and item.1.state == "present"
   group:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    gid: "{{ item.value.uid }}"
-  loop: "{{ aspects_local_users | default({}) | dict2items }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.username }}"
+    gid: "{{ item.1.uid }}"
+  loop: "{{ aspects_local_users | default({}) | dictsort }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
 
 - name: Set user state
-  when: item.value.state is defined
+  when: item.1.state is defined
   user:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    comment: "{{ item.value.fullname }}"
-    password: "{{ item.value.crypted_pass }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.username }}"
+    comment: "{{ item.1.fullname }}"
+    password: "{{ item.1.crypted_pass }}"
     createhome: "yes"
-    home: "{{ item.value.home|default('/home/' + item.value.username) }}"
-    shell: "{{ item.value.shell }}"
-    uid: "{{ item.value.uid }}"
-    group: "{{ item.value.username }}"
-  loop: "{{ aspects_local_users | default({}) | dict2items }}"
+    home: "{{ item.1.home|default('/home/' + item.1.username) }}"
+    shell: "{{ item.1.shell }}"
+    uid: "{{ item.1.uid }}"
+    group: "{{ item.1.username }}"
+  loop: "{{ aspects_local_users | default({}) | dictsort }}"
   tags:
     - aspects_local_users
 
@@ -47,39 +47,39 @@
 - name: Set system group state
   when: aspects_local_users_system_groups is defined
   group:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.name }}"
-    gid: "{{ item.value.gid }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.name }}"
+    gid: "{{ item.1.gid }}"
     system: "yes"
-  loop: "{{ aspects_local_users_system_groups|default({})|dict2items }}"
+  loop: "{{ aspects_local_users_system_groups| default({}) | dictsort }}"
   tags:
     - aspects_local_users
 
 - name: Set system user group state
   when: aspects_local_users_system_groups is defined
   group:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    gid: "{{ item.value.uid }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.username }}"
+    gid: "{{ item.1.uid }}"
     system: "yes"
-  loop: "{{ aspects_local_users_system_users|default({})|dict2items }}"
+  loop: "{{ aspects_local_users_system_users| default({}) | dictsort }}"
   tags:
     - aspects_local_users
 
 - name: Set system user state
   when: aspects_local_users_system_users is defined
   user:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    comment: "{{ item.value.fullname }}"
-    password: "{{ item.value.crypted_pass }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.username }}"
+    comment: "{{ item.1.fullname }}"
+    password: "{{ item.1.crypted_pass }}"
     createhome: "yes"
-    home: "{{ item.value.home|default('/home/' + item.value.username) }}"
-    shell: "{{ item.value.shell }}"
-    uid: "{{ item.value.uid }}"
-    group: "{{ item.value.group|default(item.value.username) }}"
+    home: "{{ item.1.home|default('/home/' + item.1.username) }}"
+    shell: "{{ item.1.shell }}"
+    uid: "{{ item.1.uid }}"
+    group: "{{ item.1.group|default(item.1.username) }}"
     system: "yes"
-  loop: "{{ aspects_local_users_system_users|default({})|dict2items }}"
+  loop: "{{ aspects_local_users_system_users| default({}) | dictsort }}"
   tags:
     - aspects_local_users
 
@@ -118,12 +118,12 @@
     - aspects_local_users_groups
 
 - name: ensure user ssh keys are set
-  when: aspects_local_users_ssh_keys is defined and item.value.state is defined
+  when: aspects_local_users_ssh_keys is defined and item.1.state is defined
   authorized_key:
-    state: "{{ item.value.state }}"
-    user: "{{ item.value.username }}"
-    key: "{{ item.value.ssh_pubkey }}"
-  loop: "{{ aspects_local_users_ssh_keys | default({}) | dict2items }}"
+    state: "{{ item.1.state }}"
+    user: "{{ item.1.username }}"
+    key: "{{ item.1.ssh_pubkey }}"
+  loop: "{{ aspects_local_users_ssh_keys | default({}) | dictsort }}"
   tags:
     - aspects_local_users
     - aspects_local_users_ssh_keys
