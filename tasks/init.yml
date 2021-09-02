@@ -11,7 +11,7 @@
 - name: Add/Remove extra groups by OS family.
   when:
     - aspects_local_users_groups is defined
-    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux" or ansible_distribution == "CentOS"
   include_tasks: "addRemoveExtraGroupsRedHat.yml"
   tags:
     - aspects_local_users
@@ -56,7 +56,7 @@
 - name: RedHat - Add/Remove extra groups by OS family.
   when:
     - aspects_local_users_groups is defined
-    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux" or ansible_distribution == "CentOS"
   include_tasks: "addRemoveExtraGroupsRedHat.yml"
   tags:
     - aspects_local_users
@@ -111,7 +111,7 @@
 
 - name: RedHat - Set users extra groups by OS family.
   when:
-    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux" or ansible_distribution == "CentOS"
   include_tasks: "setExtraGroupsRedHat.yml"
   tags:
     - aspects_local_users
