@@ -1,10 +1,10 @@
 ---
 - name: RedHat - Add/Remove extra groups
   group:
-    name: "{{ item.value.name }}"
-    state: "{{ item.value.state }}"
-    gid: "{{ item.value.gid }}"
-  loop: "{{ aspects_local_users_groups | default({}) | dict2items }}"
+    name: "{{ item.1.name }}"
+    state: "{{ item.1.state }}"
+    gid: "{{ item.1.gid }}"
+  loop: "{{ aspects_local_users_groups | default({}) | dictsort }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups

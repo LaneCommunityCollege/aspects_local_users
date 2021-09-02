@@ -1,12 +1,12 @@
 - name: Debian - Set extra user groups
   when:
-    - item.value.state is defined
-    - item.value.groups.Debian is defined
+    - item.1.state is defined
+    - item.1.groups.Debian is defined
   user:
-    state: "{{ item.value.state }}"
-    name: "{{ item.value.username }}"
-    groups: "{{ item.value.groups.Debian }}"
-  loop: "{{ aspects_local_users | default({}) | dict2items }}"
+    state: "{{ item.1.state }}"
+    name: "{{ item.1.username }}"
+    groups: "{{ item.1.groups.Debian }}"
+  loop: "{{ aspects_local_users | default({}) | dictsort }}"
   tags:
     - aspects_local_users
     - aspects_local_users_groups
