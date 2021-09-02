@@ -1,4 +1,22 @@
 ---
+- name: Add/Remove extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "Debian" or ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu"
+  include_tasks: "addRemoveExtraGroupsDebian.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+
+- name: Add/Remove extra groups by OS family.
+  when:
+    - aspects_local_users_groups is defined
+    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
+  include_tasks: "addRemoveExtraGroupsRedHat.yml"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+
 - name: Create user groups with the correct gid.
   when: item.value.state is defined and item.value.state == "present"
   group:
@@ -82,24 +100,6 @@
   loop: "{{ aspects_local_users_system_users|default({})|dict2items }}"
   tags:
     - aspects_local_users
-
-- name: Add/Remove extra groups by OS family.
-  when:
-    - aspects_local_users_groups is defined
-    - ansible_distribution == "Debian" or ansible_distribution == "Pop!_OS" or ansible_distribution == "Ubuntu"
-  include_tasks: "addRemoveExtraGroupsDebian.yml"
-  tags:
-    - aspects_local_users
-    - aspects_local_users_groups
-
-- name: Add/Remove extra groups by OS family.
-  when:
-    - aspects_local_users_groups is defined
-    - ansible_distribution == "RedHat" or ansible_distribution == "OracleLinux"
-  include_tasks: "addRemoveExtraGroupsRedHat.yml"
-  tags:
-    - aspects_local_users
-    - aspects_local_users_groups
 
 - name: Debian - Set users extra groups by OS family.
   when:
