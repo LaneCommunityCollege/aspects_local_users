@@ -16,7 +16,7 @@ Default is `False`
 Dictionary of users. See the Example Playbook for more.
 
 ## aspects_local_users_groups
-Dictionary of extra groups.
+Dictionary of extra groups that should replace the groups of the user.
 
 ```yaml
 aspects_local_users_groups:
@@ -24,6 +24,18 @@ aspects_local_users_groups:
     state: <present|absent>
     name: <name of the group>
     gid: <gid of the group>
+```
+
+## aspects_local_users_append_groups_to_user_items
+Dictionary of groups that should be appended to the user.
+```yaml
+aspects_local_users_append_groups_to_user_items:
+  < user >:
+    enabled: < True|False >
+    name: "< user >"
+    groups:
+      Debian: < list of groups >
+      RedHat: < list of groups >
 ```
 
 ## aspects_local_users_ssh_keys
@@ -100,6 +112,15 @@ The public keys you want to add to various users. See the Example Playbook for m
         state: "absent"
         name: "alpha"
         gid: "334"
+    aspects_local_users_append_groups_to_user_items:
+      webby:
+        enabled: True
+        name: "webby"
+        groups:
+          Debian:
+            - spider
+          RedHat:
+            - cat
   roles:
      - aspects_local_users
 ```

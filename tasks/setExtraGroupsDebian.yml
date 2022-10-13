@@ -10,3 +10,17 @@
   tags:
     - aspects_local_users
     - aspects_local_users_groups
+
+- name: "Debian - Append listed groups to user."
+  when:
+    - item.1.enabled
+    - item.1.groups.Debian is defined
+  user:
+    name: "{{ item.1.name }}"
+    append: "yes"
+    groups:  "{{ item.1.groups.Debian }}"
+  loop: "{{ aspects_local_users_append_groups_to_user_items | default({}) | dictsort }}"
+  tags:
+    - aspects_local_users
+    - aspects_local_users_groups
+    - aspects_local_users_groups_append
