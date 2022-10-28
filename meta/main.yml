@@ -20,6 +20,8 @@ galaxy_info:
     - name: Oracle Linux
       version:
         - 7
+        - 8
+        - 9
   categories:
     - system
 dependencies: [ ]
