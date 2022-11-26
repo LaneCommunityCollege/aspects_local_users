@@ -74,7 +74,7 @@
     - aspects_local_users
 
 - name: Set system user group state
-  when: aspects_local_users_system_groups is defined
+  when: aspects_local_users_system_users is defined
   group:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
