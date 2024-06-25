@@ -3,6 +3,7 @@
   when:
     - item.1.state is defined
     - item.1.groups.RedHat is defined
+  ignore_errors: true
   user:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
@@ -11,15 +12,17 @@
   tags:
     - aspects_local_users
     - aspects_local_users_groups
+    - aspects_local_users_groups_append
 
 - name: "RedHat - Append listed groups to user."
   when:
-    - item.1.enabled
+    - item.1.enabled or item.1.enabled == 'True' or item.1.enabled == 'true'
     - item.1.RedHat is defined
+  ignore_errors: true
   user:
     name: "{{ item.1.name }}"
     append: "yes"
-    groups:  "{{ item.1.groups.RedHat }}"
+    groups: "{{ item.1.groups.RedHat }}"
   loop: "{{ aspects_local_users_append_groups_to_user_items | default({}) | dictsort }}"
   tags:
     - aspects_local_users

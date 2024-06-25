@@ -3,4 +3,5 @@
   when: aspects_local_users_enabled
   include_tasks: init.yml
   tags:
-  - aspects_local_users
+    - aspects_local_users
+    - aspects_local_users_groups_append
