@@ -1,5 +1,6 @@
 ---
 - name: Debian - Add/Remove extra groups
+  when: item.1.enabled
   group:
     name: "{{ item.1.name }}"
     state: "{{ item.1.state }}"

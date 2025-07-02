@@ -18,7 +18,7 @@
     - aspects_local_users_groups
 
 - name: Create user groups with the correct gid.
-  when: item.1.state is defined and item.1.state == "present"
+  when: item.1.state is defined and item.1.state == "present" and item.1.enabled
   group:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
@@ -29,7 +29,7 @@
     - aspects_local_users_groups
 
 - name: Set user state
-  when: item.1.state is defined
+  when: item.1.state is defined and item.1.enabled
   user:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
@@ -63,7 +63,7 @@
     - aspects_local_users_groups
 
 - name: Set system group state
-  when: aspects_local_users_system_groups is defined
+  when: aspects_local_users_system_groups is defined and item.1.enabled
   group:
     state: "{{ item.1.state }}"
     name: "{{ item.1.name }}"
@@ -74,7 +74,7 @@
     - aspects_local_users
 
 - name: Set system user group state
-  when: aspects_local_users_system_users is defined
+  when: aspects_local_users_system_users is defined and item.1.enabled
   group:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
@@ -85,7 +85,7 @@
     - aspects_local_users
 
 - name: Set system user state
-  when: aspects_local_users_system_users is defined
+  when: aspects_local_users_system_users is defined and item.1.enabled
   user:
     state: "{{ item.1.state }}"
     name: "{{ item.1.username }}"
@@ -120,7 +120,7 @@
     - aspects_local_users_groups_append
 
 - name: ensure user ssh keys are set
-  when: aspects_local_users_ssh_keys is defined and item.1.state is defined
+  when: aspects_local_users_ssh_keys is defined and item.1.state is defined and item.1.enabled
   authorized_key:
     state: "{{ item.1.state }}"
     user: "{{ item.1.username }}"

@@ -3,6 +3,7 @@
   when:
     - item.1.state is defined
     - item.1.groups.RedHat is defined
+    - item.1.enabled
   ignore_errors: true
   user:
     state: "{{ item.1.state }}"
