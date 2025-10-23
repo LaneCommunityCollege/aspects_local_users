@@ -2,7 +2,6 @@
   when:
     - item.1.state is defined
     - item.1.groups.Debian is defined
-    - item.1.enabled
   ignore_errors: true
   user:
     state: "{{ item.1.state }}"
@@ -19,6 +18,7 @@
     - item.1.enabled or item.1.enabled == 'True' or item.1.enabled == 'true'
     - item.1.groups.Debian is defined
     - item.1.enabled
+    - item.1.groups.Debian is defined
   ignore_errors: true
   user:
     name: "{{ item.1.name }}"
