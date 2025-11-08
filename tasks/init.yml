@@ -35,7 +35,7 @@
     name: "{{ item.1.username }}"
     comment: "{{ item.1.fullname }}"
     password: "{{ item.1.crypted_pass }}"
-    createhome: "yes"
+    createhome: "{{ item.1.createhome|default('yes') }}"
     home: "{{ item.1.home|default('/home/' + item.1.username) }}"
     shell: "{{ item.1.shell }}"
     uid: "{{ item.1.uid }}"

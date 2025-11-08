@@ -4,4 +4,6 @@
   include_tasks: init.yml
   tags:
     - aspects_local_users
+    - aspects_local_users
     - aspects_local_users_groups_append
+    - aspects_local_users_ssh_keys
